@@ -1,7 +1,6 @@
 ﻿using System;
-using GeneratorCore;
 using System.Reflection;
-using Bogus;
+using Core;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -11,64 +10,27 @@ namespace TestConsole
     {
         static void Main(string[] args)
         {
-            Assembly faker = typeof(Bogus.Faker).Assembly;
-            Type dataSets = faker.GetType($"Bogus.Faker", true, true);
-
             Console.WriteLine($"Properties:");
-            foreach (PropertyInfo propertyInfo in dataSets.GetProperties())
+            AnyClass any = new AnyClass();
+
+            foreach (var item in any.GetClasses())
             {
-                Console.WriteLine($"\t{propertyInfo.Name}");
+                Console.WriteLine("\t" + item);
             }
 
-            string memeber = Console.ReadLine();
+            string className = Console.ReadLine();
 
-            Assembly assembly = typeof(Bogus.Faker).Assembly;
-
-            Type type = assembly.GetType($"Bogus.DataSets.{memeber}", true, true);
-            /*
-            Console.WriteLine($"Members:");
-            foreach (MemberInfo memberInfo in type.GetMembers())
-            {
-               
-                Console.WriteLine($"\t{memberInfo.Name}");
-            }
-            
-            Console.WriteLine("Genders: ");
-            foreach (var item in Enum.GetValues(typeof(Bogus.DataSets.Name.Gender)))
-            {
-                Console.WriteLine(item);
-            }
-            string gender = Console.ReadLine();
-            */
             Console.WriteLine($"Methods:");
-            foreach (MethodInfo methodInfo in type.GetMethods())
+            foreach (var item in any.GetMethodsByClass(className))
             {
-                Console.Write($"\t{methodInfo.Name} (");
-                foreach (ParameterInfo param in methodInfo.GetParameters())
-                {
-                    Console.Write($"{param.ParameterType.Name} {param.Name}, ");
-                }
-                Console.WriteLine(" )");
+                Console.WriteLine("\t" + item);
             }
 
+            string language = "ru";
             
             string method = Console.ReadLine();
-            string language = "ru";
-
-            //Type genderType = assembly.GetType($"Bogus.DataSets.Name.Gender", true, true);
-
-            //object gen = Activator.CreateInstance(genderType);
-            object name = Activator.CreateInstance(type, language);
-
-            MethodInfo fullName = type.GetMethod(method);
-
-            List<object> parameters =  new List<object>();
-            foreach (var p in fullName.GetParameters())
-            {
-                parameters.Add(p.DefaultValue);
-            }
-            Console.WriteLine(fullName.Invoke(name, parameters.ToArray()));
             
+            Console.WriteLine(any.GenerateData(className, method, language));
         }
     }
 }
