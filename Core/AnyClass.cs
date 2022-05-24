@@ -7,9 +7,12 @@ namespace Core
         private Assembly _assembly;
         public Assembly Assembly => _assembly;
 
+        public List<string> Locales { get; }
+
         public AnyClass()
         {
             _assembly = Assembly.Load("Bogus");
+            Locales = FillLocales();
         }
 
         public List<string> GetClasses()
@@ -34,7 +37,8 @@ namespace Core
 
             foreach (MethodInfo methodInfo in type.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
             {
-                methods.Add(methodInfo.Name);
+                if (methodInfo.ReturnType.Name.ToLower() == "string")
+                    methods.Add(methodInfo.Name);
             }
 
             return methods;
@@ -54,12 +58,12 @@ namespace Core
         }
 
         // Нужно изменить на возможность создавать некоторые классы без locale
-        public object GenerateData(string className, string method, string language = "en")
+        public object GenerateData(string className, string method, string locale = "en")
         {
             Type type = Assembly.GetType($"Bogus.DataSets.{className}", true, true);
 
             object anyObject = CheckConstructorsOnLocale(type) ?
-                               Activator.CreateInstance(type, language) :
+                               Activator.CreateInstance(type, locale) :
                                Activator.CreateInstance(type);
 
             MethodInfo methodOfObject = type.GetMethod(method);
@@ -83,9 +87,61 @@ namespace Core
             return false;
         }
 
-        public List<string> GetLanguages()
+        private List<string> FillLocales()
         {
-            
+            return new List<string>
+            {
+                "af_ZA",
+                "ar",
+                "az",
+                "cz",
+                "de",
+                "de_AT",
+                "de_CH",
+                "el",
+                "en",
+                "en_AU",
+                "en_AU_ocker",
+                "en_BORK",
+                "en_CA",
+                "en_GB",
+                "en_IE",
+                "en_IND",
+                "en_NG",
+                "en_US",
+                "en_ZA",
+                "es",
+                "es_MX",
+                "fa",
+                "fi",
+                "fr",
+                "fr_CA",
+                "fr_CH",
+                "ge",
+                "hr",
+                "id_ID",
+                "it",
+                "ja",
+                "ko",
+                "lv",
+                "nb_NO",
+                "ne",
+                "nl",
+                "nl_BE",
+                "pl",
+                "pt_BR",
+                "pt_PT",
+                "ro",
+                "ru",
+                "sk",
+                "sv",
+                "tr",
+                "uk",
+                "vi",
+                "zh_CN",
+                "zh_TW",
+                "zu_ZA"
+            };
         }
     }
 }
