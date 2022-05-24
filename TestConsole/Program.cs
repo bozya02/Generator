@@ -29,8 +29,11 @@ namespace TestConsole
             string language = "ru";
             
             string method = Console.ReadLine();
+            for (int i = 0; i < 10; i++)
+            {
+                Console.WriteLine(any.GenerateData(className, method, language));
+            }
             
-            Console.WriteLine(any.GenerateData(className, method, language));
         }
     }
 }
