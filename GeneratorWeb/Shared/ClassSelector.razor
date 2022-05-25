@@ -1,0 +1,22 @@
+﻿@inject Core.AnyClass AnyClass
+
+<div class="d-flex flex-row align-content-center">
+    <select class="selectpicker m-3" data-live-search="true" @bind="@className">
+        <option>none</option>
+        @foreach (var name in AnyClass.GetClasses())
+        {
+            <option>@name</option>
+        } 
+    </select>
+    <button class="btn btn-outline-primary btn-block m-3" @onclick="@(() => OnClickCallback.InvokeAsync(className))">
+        Добавить строку
+    </button>
+</div>
+
+
+@code {
+    private string className;
+
+    [Parameter]
+    public EventCallback<string> OnClickCallback { get; set; }
+}

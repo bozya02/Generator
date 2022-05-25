@@ -1,0 +1,76 @@
+﻿@using GeneratorWeb.Data
+@inject Core.AnyClass AnyClass
+
+<div class="card-body">
+    <ClassSelector OnClickCallback="@SetClass"/>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Property</th>
+                    <th>
+                        <button class="btn btn-outline-danger" @onclick="@ClearAll">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Datas)
+                {
+                    <tr>
+                        <td>
+                            <input type="text" class="form-control" placeholder="@data.ClassName" @bind="@data.FieldName" />
+                        </td>
+                        <td>@data.ClassName</td>
+                        <td>
+                            <select class="selectpicker m-3" data-live-search="true" @bind="@data.Method">
+                                @foreach (var name in AnyClass.GetMethodsByClass(data.ClassName))
+                                {
+                                    <option>@name</option>
+                                } 
+                            </select>
+                        </td>
+                        <td>
+                            <button class="btn btn-outline-danger" @onclick="() => ClearOne(data)">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <button class="btn btn-outline-success">
+        Generate
+    </button>
+</div>
+
+@code {
+    private List<Data> Datas { get; set; }
+
+    public void SetClass(string className)
+    {
+        if (!AnyClass.GetClasses().Contains(className))
+            return;
+        Datas.Add(new Data(className, ""));
+    }
+
+    public void ClearAll()
+    {
+        Datas = new List<Data>();
+    }
+
+    public void ClearOne(Data data)
+    {
+        Datas.Remove(data);
+    }
+
+    protected override void OnInitialized()
+    {
+        Datas = new List<Data>();
+    }
+}

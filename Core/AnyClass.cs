@@ -57,7 +57,6 @@ namespace Core
             return parameters.ToArray();
         }
 
-        // Нужно изменить на возможность создавать некоторые классы без locale
         public object GenerateData(string className, string method, string locale = "en")
         {
             Type type = Assembly.GetType($"Bogus.DataSets.{className}", true, true);
