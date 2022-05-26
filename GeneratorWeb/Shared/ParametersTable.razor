@@ -2,7 +2,7 @@
 @inject Core.AnyClass AnyClass
 
 <div class="card-body">
-    <ClassSelector OnClickCallback="@SetClass"/>
+    <ClassSelector OnClickCallback="@AddRow"/>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -18,7 +18,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var data in Datas)
+                @foreach (var data in DataList)
                 {
                     <tr>
                         <td class="align-middle">
@@ -44,33 +44,36 @@
         </table>
     </div>
 
-    <button class="btn btn-outline-success">
+    <button class="btn btn-outline-success" @onclick="@(() => OnClickCallback.InvokeAsync(DataList))">
         Generate
     </button>
 </div>
 
 @code {
-    private List<Data> Datas { get; set; }
+    private List<Data> DataList { get; set; }
 
-    public void SetClass(string className)
+    [Parameter]
+    public EventCallback<List<Data>> OnClickCallback { get; set; }
+
+    public void AddRow(string className)
     {
         if (!AnyClass.GetClasses().Contains(className))
             return;
-        Datas.Add(new Data(className, ""));
+        DataList.Add(new Data(className, ""));
     }
 
     public void ClearAll()
     {
-        Datas = new List<Data>();
+        DataList = new List<Data>();
     }
 
     public void ClearOne(Data data)
     {
-        Datas.Remove(data);
+        DataList.Remove(data);
     }
 
     protected override void OnInitialized()
     {
-        Datas = new List<Data>();
+        DataList = new List<Data>();
     }
 }

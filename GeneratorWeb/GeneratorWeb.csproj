@@ -7,7 +7,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Shared\ResultTable.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Shared\ResultTable.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Shared\ResultTable.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Shared\ResultTable.razor" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,60 @@
+﻿@using GeneratorWeb.Data
+@inject Core.AnyClass AnyClass
+
+<div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr class="align-content-center">
+                    @foreach (var field in DataList)
+                    {
+                        <th>@field.FieldName</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var list in GeneratedData)
+                {
+                    <tr>
+                        @foreach (var data in list)
+                        {
+                            <td>@data.ToString()</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Language { get; set; }
+
+    [Parameter]
+    public int DataCount { get; set; }
+
+    [Parameter]
+    public List<Data> DataList { get; set; }
+
+    private List<List<object>> GeneratedData { get; set; }
+
+    protected override void OnInitialized()
+    {
+        GeneratedData = new List<List<object>>();
+        Generate(DataCount);
+    }
+
+    public void Generate(int count)
+    {
+        for (var i = 0; i < DataCount; i++)
+        {
+            GeneratedData.Add(new List<object>());
+
+            foreach (var data in DataList)
+            {
+                GeneratedData[i].Add(AnyClass.GenerateData(data.ClassName, data.Method, Language));
+            }
+        }
+    }
+}

@@ -9,6 +9,11 @@
 
         public Data() { }
 
+        public Data(string className)
+        {
+            ClassName = className;
+        }
+
         public Data(string className, string method)
         {
             ClassName = className;
