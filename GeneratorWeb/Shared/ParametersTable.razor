@@ -4,9 +4,9 @@
 <div class="card-body">
     <ClassSelector OnClickCallback="@SetClass"/>
     <div class="table-responsive">
-        <table class="table">
+        <table class="table table-striped">
             <thead>
-                <tr>
+                <tr class="align-content-center">
                     <th>Name</th>
                     <th>Type</th>
                     <th>Property</th>
@@ -21,11 +21,11 @@
                 @foreach (var data in Datas)
                 {
                     <tr>
-                        <td>
+                        <td class="align-middle">
                             <input type="text" class="form-control" placeholder="@data.ClassName" @bind="@data.FieldName" />
                         </td>
-                        <td>@data.ClassName</td>
-                        <td>
+                        <td class="align-middle">@data.ClassName</td>
+                        <td class="align-middle">
                             <select class="selectpicker m-3" data-live-search="true" @bind="@data.Method">
                                 @foreach (var name in AnyClass.GetMethodsByClass(data.ClassName))
                                 {
@@ -33,7 +33,7 @@
                                 } 
                             </select>
                         </td>
-                        <td>
+                        <td class="align-middle">
                             <button class="btn btn-outline-danger" @onclick="() => ClearOne(data)">
                                 <span aria-hidden="true">&times;</span>
                             </button>
