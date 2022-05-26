@@ -1,4 +1,6 @@
-﻿@page "/counter"
+﻿@using Data
+
+@page "/counter"
 
 <PageTitle>Counter</PageTitle>
 
@@ -8,8 +10,9 @@
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
-<ParametersTable OnClickCallback="@IncrementCount"/>
+<ParametersTable OnClickCallback="@Generate"/>
 
+<ResultTable DataCount=10 Language="en" DataList=@DataList/>
 
 @code {
     private int currentCount = 0;
@@ -17,5 +20,12 @@
     private void IncrementCount()
     {
         currentCount++;
+    }
+
+    public List<Data> DataList { get; set; }
+
+    private void Generate(List<Data> dataList)
+    {
+        DataList = dataList;
     }
 }

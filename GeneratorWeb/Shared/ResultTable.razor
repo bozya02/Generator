@@ -4,25 +4,28 @@
 <div class="card-body">
     <div class="table-responsive">
         <table class="table table-striped">
-            <thead>
-                <tr class="align-content-center">
-                    @foreach (var field in DataList)
-                    {
-                        <th>@field.FieldName</th>
-                    }
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var list in GeneratedData)
-                {
-                    <tr>
-                        @foreach (var data in list)
+            @if (DataList != null)
+            {
+                <thead>
+                    <tr class="align-content-center">
+                        @foreach (var field in DataList)
                         {
-                            <td>@data.ToString()</td>
+                            <th>@field.FieldName</th>
                         }
                     </tr>
+                </thead>
+                <tbody>
+                    @foreach (var list in GeneratedData)
+                    {
+                        <tr>
+                            @foreach (var data in list)
+                            {
+                                <td>@data.ToString()</td>
+                            }
+                        </tr>
                 }
-            </tbody>
+                </tbody>
+            }
         </table>
     </div>
 </div>
@@ -39,14 +42,17 @@
 
     private List<List<object>> GeneratedData { get; set; }
 
-    protected override void OnInitialized()
+    protected override void OnParametersSet()
     {
         GeneratedData = new List<List<object>>();
-        Generate(DataCount);
+        Generate();
     }
 
-    public void Generate(int count)
+    public void Generate()
     {
+        if (DataList == null)
+            return;
+
         for (var i = 0; i < DataCount; i++)
         {
             GeneratedData.Add(new List<object>());
