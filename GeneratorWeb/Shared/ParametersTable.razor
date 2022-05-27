@@ -1,5 +1,5 @@
-﻿@using GeneratorWeb.Data
-@inject Core.AnyClass AnyClass
+﻿@using Core
+@inject Generator Generator
 
 <div class="card-body">
     <ClassSelector OnClickCallback="@AddRow"/>
@@ -27,7 +27,7 @@
                         <td class="align-middle">@data.ClassName</td>
                         <td class="align-middle">
                             <select class="selectpicker m-3" data-live-search="true" @bind="@data.Method">
-                                @foreach (var name in AnyClass.GetMethodsByClass(data.ClassName))
+                                @foreach (var name in Generator.GetMethodsByClass(data.ClassName))
                                 {
                                     <option>@name</option>
                                 } 
@@ -57,9 +57,9 @@
 
     public void AddRow(string className)
     {
-        if (!AnyClass.GetClasses().Contains(className))
+        if (!Generator.GetClasses().Contains(className))
             return;
-        DataList.Add(new Data(className, ""));
+        DataList.Add(new Data(className, Generator.GetMethodsByClass(className).First()));
     }
 
     public void ClearAll()

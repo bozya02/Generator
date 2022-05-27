@@ -1,5 +1,5 @@
-﻿@using Data
-@inject Core.AnyClass AnyClass 
+﻿@using Core
+@inject Generator Generator 
 
 @page "/counter"
 
@@ -10,8 +10,8 @@
     <div class="d-flex flex-row align-content-center">
         <input type="text" class="form-control" placeholder="Count" @bind="@DataCount" />
 
-        <select class="selectpicker m-3" data-live-search="true" @bind="@Language">
-            @foreach (var locale in AnyClass.Locales)
+        <select class="selectpicker m-3" data-live-search="true" @bind="@Locale">
+            @foreach (var locale in Generator.Locales)
             {
                 <option>@locale</option>
             } 
@@ -21,11 +21,11 @@
 
 <ParametersTable OnClickCallback="@Generate"/>
 
-<ResultTable DataCount=@DataCount Language=@Language DataList=@DataList/>
+<ResultTable DataCount=@DataCount locale=@Locale DataList=@DataList/>
 
 @code {
     public int DataCount { get; set; }
-    public string Language { get; set; }
+    public string Locale { get; set; }
 
     public List<Data> DataList { get; set; }
 
@@ -37,6 +37,6 @@
     protected override void OnInitialized()
     {
         DataCount = 0;
-        Language = AnyClass.Locales.First();
+        Locale = Generator.Locales.First();
     }
 }

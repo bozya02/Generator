@@ -2,14 +2,14 @@
 
 namespace Core
 {
-    public class AnyClass
+    public class Generator
     {
         private Assembly _assembly;
         public Assembly Assembly => _assembly;
 
         public List<string> Locales { get; }
 
-        public AnyClass()
+        public Generator()
         {
             _assembly = Assembly.Load("Bogus");
             Locales = FillLocales();
@@ -31,6 +31,9 @@ namespace Core
 
         public List<string> GetMethodsByClass(string className)
         {
+            if (!GetClasses().Contains(className))
+                throw new Exception("Bad class name");
+
             Type type = Assembly.GetType($"Bogus.DataSets.{className}", true, true);
 
             List<string> methods = new List<string>();
@@ -59,15 +62,19 @@ namespace Core
 
         public object GenerateData(string className, string method, string locale = "en")
         {
+            if (!GetClasses().Contains(className))
+                throw new Exception("Bad class name");
+
             Type type = Assembly.GetType($"Bogus.DataSets.{className}", true, true);
 
             object anyObject = CheckConstructorsOnLocale(type) ?
                                Activator.CreateInstance(type, locale) :
                                Activator.CreateInstance(type);
 
-            MethodInfo methodOfObject = type.GetMethod(method);
+            if (!GetMethodsByClass(className).Contains(method))
+                throw new Exception("Bad method name");
 
-            List<object> parameters = new List<object>();
+            MethodInfo methodOfObject = type.GetMethod(method);
             
             return methodOfObject.Invoke(anyObject, GetParametersForMethod(methodOfObject));
         }

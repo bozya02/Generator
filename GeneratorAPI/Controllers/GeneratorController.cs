@@ -11,34 +11,30 @@ namespace GeneratorAPI.Controllers
     [ApiController]
     public class GeneratorController : ControllerBase
     {
-        private readonly AnyClass Generator;
+        private readonly Generator Generator;
+        private readonly ConvertManager ConvertManager;
+
         private readonly ILogger<GeneratorController> _logger;
 
         public GeneratorController(ILogger<GeneratorController> logger)
         {
             _logger = logger;
-            Generator = new AnyClass();
+            Generator = new Generator();
+            ConvertManager = new ConvertManager();
         }
 
         // POST api/<GeneratorController>
         [HttpPost]
-        public ActionResult<ICollection<List<object>>> Generate(Dictionary<string, HashSet<string>> query, int count, string language = "en")
+        public ActionResult<ICollection<List<object>>> Generate(Dictionary<string, HashSet<string>> query, int count, string locale = "en")
         {
-            List<List<object>> data = new List<List<object>>();
-
-            for (int i = 0; i < count; i++)
+            try
             {
-                data.Add(new List<object>());
-                foreach (var className in query.Keys)
-                {
-                    foreach (var method in query[className])
-                    {
-                        data[i].Add(Generator.GenerateData(className, method, language));
-                    }
-                }
+                return ConvertManager.Generate(query, count, locale);
             }
-
-            return data;
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // GET api/<GeneratorController>/locale
@@ -63,9 +59,9 @@ namespace GeneratorAPI.Controllers
             {
                 return Generator.GetMethodsByClass(name);
             }
-            catch
+            catch (Exception ex)
             {
-                return NotFound();
+                return NotFound(ex.Message);
             }
         }
 
@@ -75,11 +71,11 @@ namespace GeneratorAPI.Controllers
         {
             try
             {
-                return Generator.GenerateData(name, method, locale);
+                return ConvertManager.Generate(name, method, locale);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex);
             }
         }
     }

@@ -7,7 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<AnyClass>();
+builder.Services.AddSingleton<Generator>();
+builder.Services.AddSingleton<ConvertManager>();
 
 var app = builder.Build();
 

@@ -1,5 +1,6 @@
-﻿@using GeneratorWeb.Data
-@inject Core.AnyClass AnyClass
+﻿@using Core
+@inject Generator Generator
+@inject ConvertManager ConvertManager
 
 <div class="card-body">
     <div class="table-responsive">
@@ -32,7 +33,7 @@
 
 @code {
     [Parameter]
-    public string Language { get; set; }
+    public string Locale { get; set; }
 
     [Parameter]
     public int DataCount { get; set; }
@@ -53,14 +54,6 @@
         if (DataList == null)
             return;
 
-        for (var i = 0; i < DataCount; i++)
-        {
-            GeneratedData.Add(new List<object>());
-
-            foreach (var data in DataList)
-            {
-                GeneratedData[i].Add(AnyClass.GenerateData(data.ClassName, data.Method, Language));
-            }
-        }
+        GeneratedData = ConvertManager.Generate(DataList, DataCount, Locale);
     }
 }

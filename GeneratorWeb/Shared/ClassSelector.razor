@@ -1,9 +1,10 @@
-﻿@inject Core.AnyClass AnyClass
+﻿@using Core
+@inject Generator Generator
 
 <div class="d-flex flex-row align-content-center">
     <select class="selectpicker m-3" data-live-search="true" @bind="@className">
         <option>none</option>
-        @foreach (var name in AnyClass.GetClasses())
+        @foreach (var name in Generator.GetClasses())
         {
             <option>@name</option>
         } 
