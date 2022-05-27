@@ -1,31 +1,42 @@
 ﻿@using Data
+@inject Core.AnyClass AnyClass 
 
 @page "/counter"
 
 <PageTitle>Counter</PageTitle>
 
-<h1>Counter</h1>
 
-<p role="status">Current count: @currentCount</p>
+<div class="card-body">
+    <div class="d-flex flex-row align-content-center">
+        <input type="text" class="form-control" placeholder="Count" @bind="@DataCount" />
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+        <select class="selectpicker m-3" data-live-search="true" @bind="@Language">
+            @foreach (var locale in AnyClass.Locales)
+            {
+                <option>@locale</option>
+            } 
+        </select>
+    </div>
+</div>
 
 <ParametersTable OnClickCallback="@Generate"/>
 
-<ResultTable DataCount=10 Language="en" DataList=@DataList/>
+<ResultTable DataCount=@DataCount Language=@Language DataList=@DataList/>
 
 @code {
-    private int currentCount = 0;
-
-    private void IncrementCount()
-    {
-        currentCount++;
-    }
+    public int DataCount { get; set; }
+    public string Language { get; set; }
 
     public List<Data> DataList { get; set; }
 
     private void Generate(List<Data> dataList)
     {
         DataList = dataList;
+    }
+
+    protected override void OnInitialized()
+    {
+        DataCount = 0;
+        Language = AnyClass.Locales.First();
     }
 }
