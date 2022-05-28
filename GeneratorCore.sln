@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneratorAPI", "GeneratorAP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneratorWeb", "GeneratorWeb\GeneratorWeb.csproj", "{366B6F7E-A910-45EA-BA2B-2BEB730658E7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneratorTests", "GeneratorTests\GeneratorTests.csproj", "{A1CC47EC-ACED-4E78-839D-090652AA27DB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{366B6F7E-A910-45EA-BA2B-2BEB730658E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{366B6F7E-A910-45EA-BA2B-2BEB730658E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{366B6F7E-A910-45EA-BA2B-2BEB730658E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1CC47EC-ACED-4E78-839D-090652AA27DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1CC47EC-ACED-4E78-839D-090652AA27DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1CC47EC-ACED-4E78-839D-090652AA27DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1CC47EC-ACED-4E78-839D-090652AA27DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

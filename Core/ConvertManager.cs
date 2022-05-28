@@ -8,11 +8,12 @@ namespace Core
 {
     public class ConvertManager
     {
-        private Generator Generator { get; }
+        private Generator _generator;
+        public Generator Generator => _generator;
 
         public ConvertManager()
         {
-            Generator = new Generator();
+            _generator = new Generator();
         }
 
         public List<List<object>> Generate(Dictionary<string, HashSet<string>> dataList, int count, string locale = "en")

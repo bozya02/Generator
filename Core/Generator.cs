@@ -65,6 +65,9 @@ namespace Core
             if (!GetClasses().Contains(className))
                 throw new Exception("Bad class name");
 
+            if (!Locales.Contains(locale))
+                throw new Exception("Bad locale");
+
             Type type = Assembly.GetType($"Bogus.DataSets.{className}", true, true);
 
             object anyObject = CheckConstructorsOnLocale(type) ?
