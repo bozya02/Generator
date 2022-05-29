@@ -18,6 +18,9 @@ namespace Core
 
         public List<List<object>> Generate(Dictionary<string, HashSet<string>> dataList, int count, string locale = "en")
         {
+            if (count < 1)
+                throw new Exception("Invalid count");
+
             List<List<object>> GeneratedData = new List<List<object>>();
 
             for (int i = 0; i < count; i++)
@@ -42,6 +45,9 @@ namespace Core
 
         public List<List<object>> Generate(List<Data> dataList, int count, string locale = "en")
         {
+            if (count < 1)
+                throw new Exception("Invalid count");
+
             List<List<object>> GeneratedData = new List<List<object>>();
 
             for (var i = 0; i < count; i++)

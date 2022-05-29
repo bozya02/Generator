@@ -63,7 +63,7 @@ namespace Core
         public object GenerateData(string className, string method, string locale = "en")
         {
             if (!GetClasses().Contains(className))
-                throw new Exception("Bad class name");
+                throw new Exception($"Bad class name: {className}");
 
             if (!Locales.Contains(locale))
                 throw new Exception("Bad locale");
@@ -75,7 +75,7 @@ namespace Core
                                Activator.CreateInstance(type);
 
             if (!GetMethodsByClass(className).Contains(method))
-                throw new Exception("Bad method name");
+                throw new Exception($"Bad method name: {method}");
 
             MethodInfo methodOfObject = type.GetMethod(method);
             

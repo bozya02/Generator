@@ -23,7 +23,7 @@ namespace GeneratorTests
         }
 
         [TestMethod]
-        public void GetMethodsByClassCorrectNameTest()
+        public void GetMethodsByCorrectClassNameTest()
         {
             Generator generator = new Generator();
             Assert.IsNotNull(generator.GetMethodsByClass("Finance"));
@@ -44,7 +44,7 @@ namespace GeneratorTests
         }
 
         [TestMethod]
-        public void GenerateDataIncorrectClassTest()
+        public void GenerateDataIncorrectClassNameTest()
         {
             Generator generator = new Generator();
             Assert.ThrowsException<Exception>(() => generator.GenerateData("asd", "Account", "ru"));

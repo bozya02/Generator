@@ -27,6 +27,7 @@ namespace GeneratorWeb.Service
             var content = stream.ToArray();
             return content;
         }
+
         public byte[] CreateFullExport(List<Data> DataList, List<List<object>> GeneratedData)
         {
             var workbook = new XLWorkbook();

@@ -17,10 +17,24 @@ namespace GeneratorTests
         }
 
         [TestMethod]
-        public void GenerateOneText()
+        public void GenerateOneTest()
         {
             ConvertManager convertManager = new ConvertManager();
             Assert.IsNotNull(convertManager.Generate("Finance", "Account"));
+        }
+
+        [TestMethod]
+        public void GenerateNegativeCountTest()
+        {
+            ConvertManager convertManager = new ConvertManager();
+
+            Dictionary<string, HashSet<string>> query = new Dictionary<string, HashSet<string>>();
+            query.Add("Address", new HashSet<string>
+            {
+                "City", "ZipCode"
+            });
+
+            Assert.ThrowsException<Exception>(() => convertManager.Generate(query, -10));
         }
 
         [TestMethod]
