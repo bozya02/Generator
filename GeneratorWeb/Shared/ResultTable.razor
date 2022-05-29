@@ -12,6 +12,9 @@
         <button class="btn btn-outline-warning" @onclick="@(async() => await DownloadFile("csv"))">
             Export CSV
         </button>
+        <button class="btn btn-outline-warning" @onclick="@(async() => await DownloadFile("json"))">
+            Export JSON
+        </button>
     </div>
 
     <div class="table-responsive">
@@ -79,17 +82,8 @@
     {
         if (await JSRuntime.InvokeAsync<bool>("confirm", $"Do you want to Export?"))
         {
-            byte[] fileBytes = new byte[0];
+            byte[] fileBytes = ExportService.Export(type, DataList, GeneratedData);
 
-            switch (type)
-            {
-                case "csv" :
-                    fileBytes = ExportService.CreateFullExportCSV(DataList, GeneratedData);
-                    break;
-                case "xlsx" :
-                    fileBytes = ExportService.CreateFullExportExcel(DataList, GeneratedData);
-                    break;
-            }
             var fileName = $"Export.{type}";
             await JSRuntime.InvokeAsync<object>("saveAsFile", fileName, Convert.ToBase64String(fileBytes));
         }

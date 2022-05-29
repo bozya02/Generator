@@ -7,6 +7,29 @@ namespace GeneratorWeb.Service
 {
     public class ExportService
     {
+        public byte[] Export(string type, List<Data> DataList, List<List<object>> GeneratedData)
+        {
+            byte[] fileBytes;
+
+            switch (type)
+            {
+                case "csv":
+                    fileBytes = CreateFullExportCSV(DataList, GeneratedData);
+                    break;
+                case "xlsx":
+                    fileBytes = CreateFullExportExcel(DataList, GeneratedData);
+                    break;
+                case "json":
+                    fileBytes = CreateFullExportJSON(DataList, GeneratedData);
+                    break;
+                default:
+                    fileBytes = new byte[0];
+                    break;
+            }
+
+            return fileBytes;
+        }
+
         private byte[] ConvertToByte(string content)
         {
             return Encoding.ASCII.GetBytes(content);
@@ -69,6 +92,32 @@ namespace GeneratorWeb.Service
                     worksheet.Cell(row + 2, column + 1).Value = GeneratedData[row][column].ToString();
                 }
             }
+        }
+
+        public string CreateJSON(List<Data> DataList, List<List<object>> GeneratedData)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine("[");
+
+            foreach (var data in GeneratedData)
+            {
+                stringBuilder.AppendLine("{");
+
+                stringBuilder.AppendLine(string.Join(",\n",
+                    Enumerable.Range(0, data.Count()).Select(x => $"\"{DataList[x].FieldName}\" : \"{data[x]}\"")));
+
+                stringBuilder.AppendLine(data != GeneratedData[^1] ? "}," : "}");
+            }
+
+            stringBuilder.AppendLine("]");
+            return stringBuilder.ToString();
+        }
+
+        public byte[] CreateFullExportJSON(List<Data> DataList, List<List<object>> GeneratedData)
+        {
+            var json = CreateJSON(DataList, GeneratedData);
+
+            return ConvertToByte(json);
         }
     }
 }
