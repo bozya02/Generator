@@ -1,12 +1,34 @@
 ﻿using ClosedXML.Excel;
 using Core;
+using Microsoft.JSInterop;
 using System.Text;
 
 namespace GeneratorWeb.Service
 {
     public class ExportService
     {
-        public string GetCSV(List<Data> DataList, List<List<object>> GeneratedData)
+        private byte[] ConvertToByte(string content)
+        {
+            return Encoding.ASCII.GetBytes(content);
+        }
+
+        private byte[] ConvertToByte(XLWorkbook workbook)
+        {
+            var stream = new MemoryStream();
+            workbook.SaveAs(stream);
+
+            var content = stream.ToArray();
+            return content;
+        }
+
+        public byte[] CreateFullExportCSV(List<Data> DataList, List<List<object>> GeneratedData)
+        {
+            var csv = CreateCSV(DataList, GeneratedData);
+
+            return ConvertToByte(csv);
+        }
+
+        private string CreateCSV(List<Data> DataList, List<List<object>> GeneratedData)
         {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.AppendLine(string.Join(",", DataList.Select(data => data.FieldName)));
@@ -19,16 +41,7 @@ namespace GeneratorWeb.Service
             return stringBuilder.ToString();
         }
 
-        private byte[] ConvertToByte(XLWorkbook workbook)
-        {
-            var stream = new MemoryStream();
-            workbook.SaveAs(stream);
-
-            var content = stream.ToArray();
-            return content;
-        }
-
-        public byte[] CreateFullExport(List<Data> DataList, List<List<object>> GeneratedData)
+        public byte[] CreateFullExportExcel(List<Data> DataList, List<List<object>> GeneratedData)
         {
             var workbook = new XLWorkbook();
             workbook.Properties.Title = "GeneratedData";
@@ -53,7 +66,7 @@ namespace GeneratorWeb.Service
             {
                 for (int column = 0; column < GeneratedData[row].Count(); column++)
                 {
-                    worksheet.Cell(row + 1, column + 1).Value = GeneratedData[row][column].ToString();
+                    worksheet.Cell(row + 2, column + 1).Value = GeneratedData[row][column].ToString();
                 }
             }
         }

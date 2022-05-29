@@ -1,8 +1,19 @@
 ﻿@using Core
+@using GeneratorWeb.Service
 @inject Generator Generator
 @inject ConvertManager ConvertManager
+@inject IJSRuntime JSRuntime
 
 <div class="card-body">
+    <div class="d-flex justify-content-around">
+        <button class="btn btn-outline-warning" @onclick="@(async() => await DownloadFile("xlsx"))">
+            Export Excel
+        </button>
+        <button class="btn btn-outline-warning" @onclick="@(async() => await DownloadFile("csv"))">
+            Export CSV
+        </button>
+    </div>
+
     <div class="table-responsive">
         <table class="table table-striped">
             @if (DataList != null)
@@ -42,11 +53,18 @@
     public List<Data> DataList { get; set; }
 
     private List<List<object>> GeneratedData { get; set; }
+    private ExportService ExportService {get;set;}
 
     protected override void OnParametersSet()
     {
         GeneratedData = new List<List<object>>();
         Generate();
+    }
+
+    protected override void OnInitialized()
+    {
+        GeneratedData = new List<List<object>>();
+        ExportService = new ExportService();
     }
 
     public void Generate()
@@ -55,5 +73,25 @@
             return;
 
         GeneratedData = ConvertManager.Generate(DataList, DataCount, Locale);
+    }
+
+    protected async Task DownloadFile(string type)
+    {
+        if (await JSRuntime.InvokeAsync<bool>("confirm", $"Do you want to Export?"))
+        {
+            byte[] fileBytes = new byte[0];
+
+            switch (type)
+            {
+                case "csv" :
+                    fileBytes = ExportService.CreateFullExportCSV(DataList, GeneratedData);
+                    break;
+                case "xlsx" :
+                    fileBytes = ExportService.CreateFullExportExcel(DataList, GeneratedData);
+                    break;
+            }
+            var fileName = $"Export.{type}";
+            await JSRuntime.InvokeAsync<object>("saveAsFile", fileName, Convert.ToBase64String(fileBytes));
+        }
     }
 }

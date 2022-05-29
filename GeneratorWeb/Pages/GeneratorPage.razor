@@ -1,0 +1,42 @@
+﻿@page "/generator"
+
+@using Core
+@inject Generator Generator
+
+<PageTitle>Generator</PageTitle>
+
+<div class="card p-1">
+    <div class="card-body">
+        <div class="d-flex flex-row align-content-center">
+            <input type="text" class="form-control" placeholder="Count" @bind="@DataCount" />
+
+            <select class="selectpicker m-3" data-live-search="true" @bind="@Locale">
+                @foreach (var locale in Generator.Locales)
+                {
+                    <option>@locale</option>
+                } 
+            </select>
+        </div>
+    </div>
+
+    <ParametersTable OnClickCallback="@Generate"/>
+
+    <ResultTable DataCount=@DataCount locale=@Locale DataList=@DataList/>
+</div>
+@code {
+    public int DataCount { get; set; }
+    public string Locale { get; set; }
+
+    public List<Data> DataList { get; set; }
+
+    private void Generate(List<Data> dataList)
+    {
+        DataList = dataList;
+    }
+
+    protected override void OnInitialized()
+    {
+        DataCount = 0;
+        Locale = Generator.Locales.First();
+    }
+}

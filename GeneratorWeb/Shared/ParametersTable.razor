@@ -1,52 +1,54 @@
 ﻿@using Core
 @inject Generator Generator
 
-<div class="card-body">
-    <ClassSelector OnClickCallback="@AddRow"/>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-                <tr class="align-content-center">
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Property</th>
-                    <th>
-                        <button class="btn btn-outline-danger" @onclick="@ClearAll">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var data in DataList)
-                {
-                    <tr>
-                        <td class="align-middle">
-                            <input type="text" class="form-control" placeholder="@data.ClassName" @bind="@data.FieldName" />
-                        </td>
-                        <td class="align-middle">@data.ClassName</td>
-                        <td class="align-middle">
-                            <select class="selectpicker m-3" data-live-search="true" @bind="@data.Method">
-                                @foreach (var name in Generator.GetMethodsByClass(data.ClassName))
-                                {
-                                    <option>@name</option>
-                                } 
-                            </select>
-                        </td>
-                        <td class="align-middle">
-                            <button class="btn btn-outline-danger" @onclick="() => ClearOne(data)">
+<div class="card">
+    <div class="card-body">
+        <ClassSelector OnClickCallback="@AddRow"/>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr class="align-content-center">
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Property</th>
+                        <th>
+                            <button class="btn btn-outline-danger" @onclick="@ClearAll">
                                 <span aria-hidden="true">&times;</span>
                             </button>
-                        </td>
+                        </th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                    @foreach (var data in DataList)
+                    {
+                        <tr>
+                            <td class="align-middle">
+                                <input type="text" class="form-control" placeholder="@data.ClassName" @bind="@data.FieldName" />
+                            </td>
+                            <td class="align-middle">@data.ClassName</td>
+                            <td class="align-middle">
+                                <select class="selectpicker m-3" data-live-search="true" @bind="@data.Method">
+                                    @foreach (var name in Generator.GetMethodsByClass(data.ClassName))
+                                    {
+                                        <option>@name</option>
+                                    } 
+                                </select>
+                            </td>
+                            <td class="align-middle">
+                                <button class="btn btn-outline-danger" @onclick="() => ClearOne(data)">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
 
-    <button class="btn btn-outline-success" @onclick="@(() => OnClickCallback.InvokeAsync(DataList))">
-        Generate
-    </button>
+        <button class="btn btn-outline-success" @onclick="@(() => OnClickCallback.InvokeAsync(DataList))">
+            Generate
+        </button>
+    </div>
 </div>
 
 @code {
