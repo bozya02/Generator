@@ -3,6 +3,8 @@
 Generator generator = new Generator();
 ConvertManager manager = new ConvertManager();
 
+Console.OutputEncoding = System.Text.Encoding.UTF8;
+
 var nl = Environment.NewLine;
 Console.WriteLine($"[*] This is a test data generator.{nl}" +
     $"[*] With this service, you can create data in the formats,{nl}" +
